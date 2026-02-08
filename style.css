@@ -1,0 +1,163 @@
+/* General */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    background-color: #e0f7fa;
+    color: #004d40;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 80px;
+    background-color: #004d40;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.profile {
+    font-size: 32px;
+    margin-bottom: 20px;
+    position: relative;
+    cursor: pointer;
+}
+
+.profile-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background: #00796b;
+    border-radius: 5px;
+    overflow: hidden;
+    width: 80px;
+}
+
+.profile-menu button {
+    padding: 8px;
+    border: none;
+    background: #00796b;
+    color: white;
+    cursor: pointer;
+}
+.profile-menu button:hover {
+    background: #009688;
+}
+
+.sidebar-btn {
+    width: 60px;
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #00796b;
+    color: white;
+}
+.sidebar-btn:hover {
+    background-color: #009688;
+}
+
+/* Main Area */
+.main {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.controls input, .controls select, .controls button {
+    padding: 8px;
+    font-size: 14px;
+}
+
+/* Notifications */
+#notifications {
+    margin-bottom: 20px;
+    color: #d32f2f;
+}
+
+/* Table */
+.table-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+.row {
+    display: contents;
+}
+.row.header .cell {
+    font-weight: bold;
+}
+.cell {
+    padding: 10px;
+    border: 1px solid #004d40;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* QR Scan */
+.qr-scan {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.qr-box {
+    width: 300px;
+    height: 300px;
+    border: 2px dashed #00796b;
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+.qr-scan input {
+    margin-bottom: 10px;
+    padding: 8px;
+    width: 200px;
+}
+
+/* QR History */
+.qr-history {
+    border-top: 1px solid #004d40;
+    padding-top: 10px;
+}
+.qr-history ul {
+    list-style: none;
+    padding: 0;
+}
+.qr-history li {
+    border-bottom: 1px dashed #00796b;
+    padding: 5px;
+}
+
+/* Dark Theme */
+body.dark {
+    background-color: #1e1e1e;
+    color: #fff;
+}
+body.dark .sidebar {
+    background-color: #333;
+}
+body.dark .sidebar-btn, body.dark .profile-menu button {
+    background-color: #555;
+    color: #fff;
+}
+body.dark .sidebar-btn:hover, body.dark .profile-menu button:hover {
+    background-color: #777;
+}
+body.dark .cell {
+    border-color: #fff;
+}
+body.dark .qr-box {
+    border-color: #fff;
+}

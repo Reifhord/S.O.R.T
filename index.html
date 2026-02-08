@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project S.O.R.T Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="profile">
+            👤
+            <div class="profile-menu" id="profileMenu">
+                <button id="settingsBtn">Settings</button>
+                <button id="logoutBtn">Logout</button>
+            </div>
+        </div>
+        <button class="sidebar-btn" id="qrBtn">QR</button>
+        <button class="sidebar-btn" id="historyBtn">History</button>
+        <button class="sidebar-btn" id="toggleThemeBtn">🌙</button>
+    </div>
+
+    <div class="main">
+        <!-- Search & Sort -->
+        <div class="controls">
+            <input type="text" id="searchInput" placeholder="Search files...">
+            <select id="sortSelect">
+                <option value="name">Sort by Name</option>
+                <option value="barangay">Sort by Barangay</option>
+            </select>
+            <button id="exportBtn">Export CSV</button>
+        </div>
+
+        <!-- Notifications -->
+        <div id="notifications"></div>
+
+        <!-- Table -->
+        <div class="table-container" id="fileTable">
+            <div class="row header">
+                <div class="cell">Name</div>
+                <div class="cell">Barangay</div>
+            </div>
+        </div>
+
+        <!-- QR Scan Area -->
+        <div class="qr-scan" id="qrScanArea">
+            <h2>QR Scan Here</h2>
+            <div class="qr-box">[Camera preview]</div>
+            <input type="text" id="qrInput" placeholder="Simulate QR code">
+            <button id="scanBtn">Scan QR</button>
+        </div>
+
+        <!-- QR History Panel -->
+        <div id="qrHistory" class="qr-history">
+            <h3>QR Scan History</h3>
+            <ul id="historyList"></ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
