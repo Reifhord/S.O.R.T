@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Scanner</title>
+<script src="https://unpkg.com/html5-qrcode"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+  <h2>Scan Request Form</h2>
+  <div id="reader"></div>
+  <br>
+  <a href="index.html" class="action-btn">← Back</a>
+</div>
+
+<script>
+function onScanSuccess(text){
+
+  const last=(text.match(/LASTNAME:\s*(.*)/i)||[])[1];
+  const brgy=(text.match(/BRGY:\s*(.*)/i)||[])[1];
+
+  if(!last || !brgy){
+    alert("QR must contain LASTNAME and BRGY.");
+    return;
+  }
+
+  let data=JSON.parse(localStorage.getItem("files"))||{};
+  if(!data[brgy]) data[brgy]=[];
+
+  if(!data[brgy].includes(last)){
+    data[brgy].push(last);
+  }
+
+  data[brgy].sort((a,b)=>a.localeCompare(b));
+
+  localStorage.setItem("files",JSON.stringify(data));
+
+  alert("Saved: " + last + " → " + brgy);
+}
+
+new Html5QrcodeScanner("reader",{fps:10,qrbox:250})
+.render(onScanSuccess);
+</script>
+
+</body>
+</html>

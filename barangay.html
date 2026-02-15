@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Barangay Folder</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+  <h2 id="title"></h2>
+  <input id="search" placeholder="Search last name...">
+  <div id="files"></div>
+  <a href="files.html" class="action-btn">← Back</a>
+</div>
+
+<script>
+const brgy=new URLSearchParams(location.search).get("name");
+document.getElementById("title").textContent=brgy+" Files";
+
+let data=JSON.parse(localStorage.getItem("files"))||{};
+let records=data[brgy]||[];
+
+function render(filter=""){
+  const box=document.getElementById("files");
+  box.innerHTML="";
+  const filtered=records.filter(r=>r.toLowerCase().includes(filter.toLowerCase()));
+
+  if(filtered.length===0){
+    box.innerHTML='<div class="empty">No files yet</div>';
+    return;
+  }
+
+  filtered.forEach(r=>{
+    box.innerHTML += `<div class="list-card">${r}</div>`;
+  });
+}
+search.oninput=e=>render(e.target.value);
+render();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Barangay Files</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+  <h2>Barangay Files</h2>
+  <input id="search" placeholder="Search barangay...">
+  <div id="list"></div>
+  <a href="index.html" class="action-btn">← Back</a>
+</div>
+
+<script>
+const barangays=[/* same 64 list */
+"Angoluan","Annafunan","Arabiat","Aromin","Babaran","Bacradal",
+"Benguet","Buneg","Busilelao","Cabugao","Caniguing","Carulay",
+"Castillo","Dammang East","Dammang West","Diasan","Dicaraoyan",
+"Dugayong","Fugu","Garit Norte","Garit Sur","Gucab","Gumbauan",
+"Ipil","Libertad","Mabbayad","Mabuhay","Madadamian","Magleticia",
+"Malibago","Maligaya","Malitao","Narra","Nilumisu","Pag-asa",
+"Pangal Norte","Pangal Sur","Rumang-ay","Salay","Salvacion",
+"San Antonio Minit","San Antonio Ugad","San Carlos","San Fabian",
+"San Felipe","San Juan","San Manuel","San Miguel","San Salvador",
+"Santa Ana","Santa Cruz","Santa Maria","Santa Monica","Santo Domingo",
+"Silauan Norte","Silauan Sur","Sinabbaran","Soyung","Taggappan",
+"Tuguegarao","Villa Campo","Villa Fermin","Villa Rey","Villa Victoria"
+];
+
+const list=document.getElementById("list");
+const data=JSON.parse(localStorage.getItem("files"))||{};
+
+function render(filter=""){
+  list.innerHTML="";
+  barangays.filter(b=>b.toLowerCase().includes(filter.toLowerCase()))
+  .sort()
+  .forEach(b=>{
+    const count=(data[b]||[]).length;
+    list.innerHTML +=
+      `<a class="list-card" href="barangay.html?name=${encodeURIComponent(b)}">
+         ${b} <span class="count">${count} files</span>
+       </a>`;
+  });
+}
+
+search.oninput=e=>render(e.target.value);
+render();
+</script>
+
+</body>
+</html>
