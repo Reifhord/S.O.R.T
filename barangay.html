@@ -3,41 +3,75 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Barangay Folder</title>
+<title>Barangay Records</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="app">
-  <h2 id="title"></h2>
-  <input id="search" placeholder="Search last name...">
+  <h2 id="title">Barangay Records</h2>
+  <input id="search" placeholder="Search patient name...">
   <div id="files"></div>
   <a href="files.html" class="action-btn">← Back</a>
 </div>
 
 <script>
-const brgy=new URLSearchParams(location.search).get("name");
-document.getElementById("title").textContent=brgy+" Files";
+const brgy = new URLSearchParams(location.search).get("name");
+document.getElementById("title").textContent = brgy + " Records";
 
-let data=JSON.parse(localStorage.getItem("files"))||{};
-let records=data[brgy]||[];
+let data = JSON.parse(localStorage.getItem("files")) || {};
+let records = data[brgy] || [];
 
 function render(filter=""){
-  const box=document.getElementById("files");
-  box.innerHTML="";
-  const filtered=records.filter(r=>r.toLowerCase().includes(filter.toLowerCase()));
+  const box = document.getElementById("files");
+  box.innerHTML = "";
 
-  if(filtered.length===0){
-    box.innerHTML='<div class="empty">No files yet</div>';
+  const filtered = records.filter(r=>
+    (r.name || "").toLowerCase().includes(filter.toLowerCase())
+  );
+
+  if(filtered.length === 0){
+    box.innerHTML = '<div class="empty">No records yet</div>';
     return;
   }
 
-  filtered.forEach(r=>{
-    box.innerHTML += `<div class="list-card">${r}</div>`;
+  filtered.forEach((r,i)=>{
+    let card = document.createElement("div");
+    card.className = "list-card";
+
+    card.innerHTML = `
+      <b onclick="view(${i})" style="cursor:pointer">${r.name}</b> | Age: ${r.age}
+      <br><small>${r.time}</small>
+      <br>
+      <button onclick="view(${i})">View Photos</button>
+      <button onclick="del(${i})">Delete</button>
+    `;
+
+    box.appendChild(card);
   });
 }
-search.oninput=e=>render(e.target.value);
+
+document.getElementById("search").oninput = e => render(e.target.value);
 render();
+
+function view(i){
+  const r = records[i];
+  const w = window.open("");
+  w.document.write(`<h2>${r.name}</h2><p>Age: ${r.age}</p><p>${r.time}</p>`);
+  if(r.images){
+    r.images.forEach(img=>{
+      w.document.write(`<img src="${img}" style="width:100%;max-width:500px;margin:10px;">`);
+    });
+  }
+}
+
+function del(i){
+  if(!confirm("Delete this record?")) return;
+  records.splice(i,1);
+  data[brgy] = records;
+  localStorage.setItem("files", JSON.stringify(data));
+  render();
+}
 </script>
 
 </body>
