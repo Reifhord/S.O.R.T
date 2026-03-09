@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Upload Patient Request</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+  <h2>Upload Patient Request</h2>
+
+  <label>Patient Full Name</label>
+  <input id="name" placeholder="Enter full name">
+
+  <label>Age</label>
+  <input id="age" type="number" placeholder="Enter age">
+
+  <label>Select Barangay</label>
+  <select id="barangay"></select>
+
+  <label>Upload Request Form Photos (Max 6)</label>
+  <input type="file" id="photos" accept="image/*" multiple>
+
+  <button class="action-btn" onclick="submitRequest()">Submit Request</button>
+</div>
+
+<script>
+const barangays=[
+"Angoluan","Annafunan","Arabiat","Aromin","Babaran","Bacradal",
+"Benguet","Buneg","Busilelao","Cabugao","Caniguing","Carulay",
+"Castillo","Dammang East","Dammang West","Diasan","Dicaraoyan",
+"Dugayong","Fugu","Garit Norte","Garit Sur","Gucab","Gumbauan",
+"Ipil","Libertad","Mabbayad","Mabuhay","Madadamian","Magleticia",
+"Malibago","Maligaya","Malitao","Narra","Nilumisu","Pag-asa",
+"Pangal Norte","Pangal Sur","Rumang-ay","Salay","Salvacion",
+"San Antonio Minit","San Antonio Ugad","San Carlos","San Fabian",
+"San Felipe","San Juan","San Manuel","San Miguel","San Salvador",
+"Santa Ana","Santa Cruz","Santa Maria","Santa Monica","Santo Domingo",
+"Silauan Norte","Silauan Sur","Sinabbaran","Soyung","Taggappan",
+"Tuguegarao","Villa Campo","Villa Fermin","Villa Rey","Villa Victoria"
+];
+
+const select = document.getElementById("barangay");
+barangays.forEach(b=>{
+  let o = document.createElement("option");
+  o.textContent = b;
+  select.appendChild(o);
+});
+
+function submitRequest(){
+  const name = document.getElementById("name").value.trim();
+  const age = document.getElementById("age").value.trim();
+  const brgy = document.getElementById("barangay").value;
+  const photos = document.getElementById("photos").files;
+
+  if(!name || !age || !brgy){
+    alert("Please fill all fields");
+    return;
+  }
+
+  if(photos.length>6){
+    alert("Maximum 6 photos only");
+    return;
+  }
+
+  // convert photos to Base64
+  const readerPromises = [];
+  for(let file of photos){
+    readerPromises.push(new Promise(resolve=>{
+      const reader = new FileReader();
+      reader.onload = e => resolve(e.target.result);
+      reader.readAsDataURL(file);
+    }));
+  }
+
+  Promise.all(readerPromises).then(images=>{
+    let data = JSON.parse(localStorage.getItem("files")) || {};
+    if(!data[brgy]) data[brgy] = [];
+
+    data[brgy].push({
+      name: name,
+      age: age,
+      images: images,
+      time: new Date().toLocaleString()
+    });
+
+    localStorage.setItem("files", JSON.stringify(data));
+
+    alert("Patient request saved!");
+    window.location.href = "files.html"; // redirect to barangay files
+  });
+}
+</script>
+
+</body>
+</html>
