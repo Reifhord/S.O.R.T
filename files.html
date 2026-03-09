@@ -16,7 +16,7 @@
 </div>
 
 <script>
-const barangays=[/* same 64 list */
+const barangays=[
 "Angoluan","Annafunan","Arabiat","Aromin","Babaran","Bacradal",
 "Benguet","Buneg","Busilelao","Cabugao","Caniguing","Carulay",
 "Castillo","Dammang East","Dammang West","Diasan","Dicaraoyan",
@@ -31,24 +31,28 @@ const barangays=[/* same 64 list */
 "Tuguegarao","Villa Campo","Villa Fermin","Villa Rey","Villa Victoria"
 ];
 
-const list=document.getElementById("list");
-const data=JSON.parse(localStorage.getItem("files"))||{};
+const listDiv = document.getElementById("list");
+const searchInput = document.getElementById("search");
 
-function render(filter=""){
-  list.innerHTML="";
-  barangays.filter(b=>b.toLowerCase().includes(filter.toLowerCase()))
-  .sort()
-  .forEach(b=>{
-    const count=(data[b]||[]).length;
-    list.innerHTML +=
-      `<a class="list-card" href="barangay.html?name=${encodeURIComponent(b)}">
-         ${b} <span class="count">${count} files</span>
-       </a>`;
-  });
+function renderFiles(filter=""){
+    listDiv.innerHTML = "";
+    const data = JSON.parse(localStorage.getItem("files")) || {};
+
+    barangays
+    .filter(b => b.toLowerCase().includes(filter.toLowerCase()))
+    .sort()
+    .forEach(b=>{
+        const count = data[b] ? data[b].length : 0;
+        const a = document.createElement("a");
+        a.className = "list-card";
+        a.href = "barangay.html?name=" + encodeURIComponent(b);
+        a.innerHTML = `${b} <span class="count">${count} record${count!==1?'s':''}</span>`;
+        listDiv.appendChild(a);
+    });
 }
 
-search.oninput=e=>render(e.target.value);
-render();
+searchInput.oninput = e => renderFiles(e.target.value);
+renderFiles();
 </script>
 
 </body>
